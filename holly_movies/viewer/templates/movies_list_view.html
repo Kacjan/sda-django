@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Movies ListView</h1>
+    <ul>
+        {% for movie in object_list %}
+            <li>
+            {{ movie.title }} ({{ movie.number_of_production }}) - {{ movie.genre.name }}
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}

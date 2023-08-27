@@ -1,8 +1,20 @@
-from django.shortcuts import render
+# builtin python
 
-from django.http import HttpResponse
+# 3rd packages
+
+# own packages
+
+# posegrowane alfabetycznie.
 from pprint import pprint
-from .models import Movie
+
+import json
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render
+from django.views import View
+from django.views.generic import TemplateView, ListView
+
+from .models import Movie, Link
+
 
 def hello(request, pk):
     # if s == 'signed':
@@ -19,3 +31,65 @@ def hello_1(request):
         return HttpResponse(" ".join(str(sorted(arr))))
 
     return HttpResponse(" ".join(str(arr)))
+
+# def movies(request):
+#     movies = list(Movie.objects.all().values())
+#     return JsonResponse(movies, safe=False)
+#
+
+def home(request): # /<str:s0>
+    s1 = request.GET.get('s1', '') # -> /adjective?s1=xyz vs /adjective s1 = None s1=''
+    return render(request, template_name='hello.html', context={'adjectives': [s1, 'beautiful', 'wonderful'],
+                                                                'page_title': 'Holly Movies Home Page'})
+
+
+def movies_list(request):
+    return render(
+        request,
+        template_name='movies.html',
+        context={'movies': Movie.objects.all()}
+    )
+
+
+class MoviesView(View):
+    def get(self, request):
+        return render(
+            request,
+            template_name='movies.html',
+            context={'movies': Movie.objects.all()}
+        )
+
+
+class MoviesTemplateView(TemplateView):
+    template_name = 'movies.html'
+    extra_context = {'movies': Movie.objects.all()}
+
+
+class MoviesListView(ListView):
+    template_name = 'movies_list_view.html'
+    model = Movie
+
+
+
+# def my_fav_links(request):
+#     urls = ['http://www.wp.pl/',
+#             'http://www.wp.pl/',
+#             'http://www.onet.pl/',
+#             'http://www.interia.pl/',
+#             'http://www.facebook.com/']
+#     return render(
+#         request,
+#         template_name='fav_links.html',
+#         context={'links': urls}
+#     )
+
+
+class MyFavLinks(TemplateView):
+    template_name = 'fav_links.html'
+
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['links'] = Link.objects.all()
+        context['title'] = 'My Fav Links'
+        return context

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Szablon strony</title>
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="#" class="left">Główna</a>
+      <a href="https://sdacademy.pl" class="left">SDA</a>
+      <a href="#" class="right">Zaloguj</a>
+    </nav>
+    <h1>Mój blog</h1>
+    <h2>o zdrowiu i urodzie</h2>
+  </header>
+  <main>
+    <aside>
+      <h4>Dodatkowe menu</h4>
+        <a href="#">Pozycja 1</a>
+        <a href="#">Pozycja 2</a>
+    </aside>
+    <section>
+      <h1>O moim zdrowiu</h1>
+      <p>...</p>
+    </section>
+    <aside>
+      <h4>Pogoda na dziś</h4>
+      <p class="weather">
+        <img src="ikona_pogody.png">
+        <strong>20&deg;C</strong><br>
+        teraz w <b>Warszawie</b>
+      </p>
+    </aside>
+    <div style="clear: both;"></div>
+      <table border="1">
+      <tr>
+          <td rowspan="2" colspan="2">Nothing</td>
+          <td colspan="2">Used Belt Deflection</td>
+          <td rowspan="2">Set deflection of new belt</td>
+      </tr>
+      <tr>
+          <td>Limit</td>
+          <td>Adjust Deflection</td>
+      </tr>
+      <tr>
+          <td rowspan="2">Alternator</td>
+          <td>Models without AC</td>
+          <td>10mm</td>
+          <td>5-7mm</td>
+          <td rowspan="2">5-7mm</td>
+      </tr>
+      <tr>
+          <td>Models with AC</td>
+          <td>12mm</td>
+          <td>6-8mm</td>
+      </tr>
+      <tr>
+          <td colspan="2">Power Steering Oil Pump</td>
+          <td>12.5mm</td>
+          <td>7.9mm</td>
+          <td>6-8mm</td>
+      </tr>
+
+  </table>
+      <p></p>
+      <table border="1">
+          <tr>
+              <td><b>Title</b></td>
+              <td>Year of production</td>
+              <td>Genre</td>
+              <td>Director</td>
+          </tr>
+          <tr>
+              <td>Pila 1</td>
+              <td>Year of production</td>
+              <td>Genre</td>
+              <td>Director</td>
+          </tr>
+          <tr>
+              <td>Pila 2</td>
+              <td>Year of production</td>
+              <td>Genre</td>
+              <td>Director</td>
+          </tr>
+          <tr>
+              <td>Pila 3</td>
+              <td>Year of production</td>
+              <td>Genre</td>
+              <td>Director</td>
+          </tr>
+      </table>
+
+      <form action="index.html" method="get">
+    <label for="firstname">Podaj imię: </label>
+    <input type="text" name="firstname" id="firstname" />
+
+    <label for="message">Wpisz wiadomość: </label>
+    <textarea cols="10" rows="10" name="message" id="message"></textarea>
+    <select name="city">
+        <option value="value1">Warszawa</option>
+        <option value="value2">Szczecin</option>
+        <option value="value3">Łódź</option>
+    </select>
+          <input type="file" name="fileUpload" />
+
+          <p></p>
+          <input type="radio" name="sex" value="female" /> Kobieta
+            <input type="radio" name="sex" value="male" /> Mężczyzna
+          <p></p>
+          <input type="checkbox" name="accept" /> Akceptuję regulamin
+    <p></p>
+    <input type="submit" value="Wyślij" />
+    </form>
+      <p></p>
+  </main>
+  <footer>
+    <section>Strona wykonana przeze mnie</section>
+    <section class="right">&copy; prawa zastrzeżone</section>
+  </footer>
+</body>
+
+</html>

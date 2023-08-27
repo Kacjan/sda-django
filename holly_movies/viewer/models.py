@@ -18,8 +18,15 @@ class Movie(models.Model):
     def __str__(self):
         return self.title
 
-#########----------##########
 
+class Link(models.Model):
+    name = models.CharField(max_length=50)
+    URL = models.URLField(max_length=100, null=True)
+
+    def __str__(self):
+        return self.name
+
+#########----------##########
 
 
 
