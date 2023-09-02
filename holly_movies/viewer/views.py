@@ -11,10 +11,18 @@ import json
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views import View
-from django.views.generic import TemplateView, ListView
+from django.views.generic import TemplateView,\
+    ListView, FormView, CreateView, UpdateView
 
-from .models import Movie, Link
+from .models import Movie, Link, Genre
 
+# NEW
+from .forms import MovieForm, GenreForm, MovieFormModel
+from logging import getLogger
+
+from django.urls import reverse_lazy
+
+LOGGER = getLogger()
 
 def hello(request, pk):
     # if s == 'signed':
@@ -71,18 +79,6 @@ class MoviesListView(ListView):
 
 
 
-# def my_fav_links(request):
-#     urls = ['http://www.wp.pl/',
-#             'http://www.wp.pl/',
-#             'http://www.onet.pl/',
-#             'http://www.interia.pl/',
-#             'http://www.facebook.com/']
-#     return render(
-#         request,
-#         template_name='fav_links.html',
-#         context={'links': urls}
-#     )
-
 
 class MyFavLinks(TemplateView):
     template_name = 'fav_links.html'
@@ -93,3 +89,67 @@ class MyFavLinks(TemplateView):
         context['links'] = Link.objects.all()
         context['title'] = 'My Fav Links'
         return context
+
+
+
+# ---------------02.09---------------- #
+
+class GenreCreateView(FormView): # self.form_class
+    template_name = 'create_genre_form.html'
+    form_class = GenreForm
+    success_url = reverse_lazy('movies-list-view')
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        cleaned_data = form.cleaned_data
+        Genre.objects.create(name=cleaned_data['name'])
+
+
+        return result
+
+class MovieCreateView(FormView):
+    template_name = 'form.html'
+    form_class = MovieForm
+    success_url = reverse_lazy('movies-list-view')
+
+    def form_valid(self, form):
+        result = super().form_valid(form)
+        cleaned_data = form.cleaned_data
+        Movie.objects.create(
+            title=cleaned_data['title'],
+            genre=cleaned_data['genre'],
+            rating=cleaned_data['rating'],
+            released=cleaned_data['released'],
+            description=cleaned_data['description'],
+        )
+
+        return result
+
+
+    def form_invalid(self, form):
+        LOGGER.warning('User provided invalid data.')
+
+        return super().form_invalid(form)
+
+
+class MovieCreateViewForm(CreateView):
+    template_name = 'form.html'
+    form_class = MovieFormModel
+    success_url = reverse_lazy('movies-list-view')
+
+    def form_invalid(self, form):
+        LOGGER.warning('User provided invalid data.')
+
+        return super().form_invalid(form)
+
+
+class MovieUpdateView(UpdateView):
+    template_name = 'form.html'
+    model = Movie
+    form_class = MovieFormModel
+    success_url = reverse_lazy('movies-list-view')
+
+    def form_invalid(self, form):
+        LOGGER.warning('User provided invalid data.')
+
+        return super().form_invalid(form)

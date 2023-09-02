@@ -17,18 +17,22 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from viewer.views import hello, home, movies_list, MoviesView, MoviesTemplateView\
-    ,MoviesListView, MyFavLinks
-#, movies
+from viewer.views import hello, home, MoviesView, MoviesTemplateView, \
+    MoviesListView, MyFavLinks, MovieCreateView, GenreCreateView, MovieUpdateView
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('hello/<int:pk>', hello),
     path('adjectives/', home, name='hello'),
-    # path('movies', movies),
-    # path('', movies_list, name='index')
     path('', MoviesView.as_view(), name='index'),
     path('movies/template', MoviesTemplateView.as_view(), name='movies-template'),
     path('movies/list_view', MoviesListView.as_view(), name='movies-list-view'),
-    path('links', MyFavLinks.as_view(), name='links') # localhost:8000/links
+    path('links', MyFavLinks.as_view(), name='links'),
+    path('movies/create', MovieCreateView.as_view(), name='movie_create'),
+    path('movies/create/genre', GenreCreateView.as_view(), name='genre_create'),
+
+    path('movies/update/<pk>', MovieUpdateView.as_view(), name='movie_update')
+    #############################
+
 ]

@@ -10,10 +10,11 @@ class Genre(models.Model):
 
 class Movie(models.Model):
     title = models.CharField(max_length=100)
-    description = models.TextField()
     genre = models.ForeignKey(Genre, models.DO_NOTHING, null=True)
-    number_of_production = models.IntegerField()
-    avg_review = models.IntegerField(null=True)
+    rating = models.IntegerField(null=True)
+    released = models.DateField()
+    description = models.TextField()
+    created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.title
