@@ -1,12 +1,15 @@
 {% extends 'base.html' %}
-
+{% block title %} Movie list of views!! {% endblock %}
 {% block content %}
     <h1>Movies ListView</h1>
     <ul>
         {% for movie in object_list %}
-            <li>
-                {{ movie.id }}. {{ movie.title }} ({{ movie.released }}) - {{ movie.genre.name }} <a href="{% url 'movie_update' movie.id %}"> EDIT </a>
-            </li>
+            {{ forloop.counter }}. {{ movie.title }} ({{ movie.released }}) - {{ movie.genre.name }}
+            <div class="btn-group">
+                <a href="{% url 'movie_update' movie.id %}" class="btn btn-primary mr-2"> EDIT </a>
+                <a href="{% url 'movie_delete' movie.id %}" class="btn btn-danger"> DELETE </a>
+            </div>
+            <div class="my-2"></div>
         {% endfor %}
     </ul>
 

@@ -12,7 +12,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.views import View
 from django.views.generic import TemplateView,\
-    ListView, FormView, CreateView, UpdateView
+    ListView, FormView, CreateView, UpdateView, DeleteView
 
 from .models import Movie, Link, Genre
 
@@ -40,10 +40,6 @@ def hello_1(request):
 
     return HttpResponse(" ".join(str(arr)))
 
-# def movies(request):
-#     movies = list(Movie.objects.all().values())
-#     return JsonResponse(movies, safe=False)
-#
 
 def home(request): # /<str:s0>
     s1 = request.GET.get('s1', '') # -> /adjective?s1=xyz vs /adjective s1 = None s1=''
@@ -78,11 +74,8 @@ class MoviesListView(ListView):
     model = Movie
 
 
-
-
 class MyFavLinks(TemplateView):
     template_name = 'fav_links.html'
-
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -94,6 +87,7 @@ class MyFavLinks(TemplateView):
 
 # ---------------02.09---------------- #
 
+
 class GenreCreateView(FormView): # self.form_class
     template_name = 'create_genre_form.html'
     form_class = GenreForm
@@ -104,8 +98,8 @@ class GenreCreateView(FormView): # self.form_class
         cleaned_data = form.cleaned_data
         Genre.objects.create(name=cleaned_data['name'])
 
-
         return result
+
 
 class MovieCreateView(FormView):
     template_name = 'form.html'
@@ -124,7 +118,6 @@ class MovieCreateView(FormView):
         )
 
         return result
-
 
     def form_invalid(self, form):
         LOGGER.warning('User provided invalid data.')
@@ -153,3 +146,9 @@ class MovieUpdateView(UpdateView):
         LOGGER.warning('User provided invalid data.')
 
         return super().form_invalid(form)
+
+
+class MovieDeleteView(DeleteView):
+    template_name = "movie_confirm_delete.html"
+    model = Movie
+    success_url = reverse_lazy('movies-list-view')
