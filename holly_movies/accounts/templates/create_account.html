@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Create Account - holly movies</title>
+</head>
+<body>
+    <h2>Create Account</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Sign-up</button>
+    </form>
+</body>
+</html>

@@ -43,6 +43,28 @@
              <a class="nav-item nav-link active" href="{% url 'genre_create' %}">
               Add Genre
             </a>
+
+
+            {% if user.is_authenticated %}
+              <a class="nav-item nav-link active">
+                  Logged as: {{ user }}
+              </a>
+              <a class="nav-item nav-link active" href="{% url 'password_change_view' %}"> Change Password </a>
+                         <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit" value="Submit" class="btn btn-danger">Logout</button>
+              </form>
+            {% else %}
+              <a class="nav-item nav-link">Guest</a>
+            <a class="nav-item nav-link active" href="{% url 'sign_up' %}">
+              Sign-up
+            </a>
+
+            {% endif %}
+
+
+
+
           </div>
         </div>
       </div>

@@ -70,7 +70,6 @@ class MovieFormModel(forms.ModelForm):
         fields = '__all__'
 
 
-
     def clean_description(self):
         initial = self.cleaned_data['description']
         sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')

@@ -7,6 +7,8 @@
 # posegrowane alfabetycznie.
 from pprint import pprint
 
+from django.contrib.auth.models import User
+
 import json
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
@@ -21,8 +23,17 @@ from .forms import MovieForm, GenreForm, MovieFormModel
 from logging import getLogger
 
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.views import LoginView
 
 LOGGER = getLogger()
+
+
+class StaffRequiredMixin(UserPassesTestMixin):
+  def test_func(self):
+    return self.request.user.is_staff
+
 
 def hello(request, pk):
     # if s == 'signed':
@@ -41,6 +52,7 @@ def hello_1(request):
     return HttpResponse(" ".join(str(arr)))
 
 
+# @login_required
 def home(request): # /<str:s0>
     s1 = request.GET.get('s1', '') # -> /adjective?s1=xyz vs /adjective s1 = None s1=''
     return render(request, template_name='hello.html', context={'adjectives': [s1, 'beautiful', 'wonderful'],
@@ -48,6 +60,7 @@ def home(request): # /<str:s0>
 
 
 def movies_list(request):
+    print('hello')
     return render(
         request,
         template_name='movies.html',
@@ -88,10 +101,11 @@ class MyFavLinks(TemplateView):
 # ---------------02.09---------------- #
 
 
-class GenreCreateView(FormView): # self.form_class
+class GenreCreateView(PermissionRequiredMixin, LoginRequiredMixin, FormView): # self.form_class
     template_name = 'create_genre_form.html'
     form_class = GenreForm
     success_url = reverse_lazy('movies-list-view')
+    permission_required = 'viewer.add_genre'
 
     def form_valid(self, form):
         result = super().form_valid(form)
@@ -125,10 +139,11 @@ class MovieCreateView(FormView):
         return super().form_invalid(form)
 
 
-class MovieCreateViewForm(CreateView):
+class MovieCreateViewForm(PermissionRequiredMixin, LoginRequiredMixin, CreateView):
     template_name = 'form.html'
     form_class = MovieFormModel
     success_url = reverse_lazy('movies-list-view')
+    permission_required = 'viewer.add_movie'
 
     def form_invalid(self, form):
         LOGGER.warning('User provided invalid data.')
@@ -148,7 +163,12 @@ class MovieUpdateView(UpdateView):
         return super().form_invalid(form)
 
 
-class MovieDeleteView(DeleteView):
+class MovieDeleteView(StaffRequiredMixin,
+                      PermissionRequiredMixin,
+                      LoginRequiredMixin,
+                      DeleteView):
     template_name = "movie_confirm_delete.html"
     model = Movie
     success_url = reverse_lazy('movies-list-view')
+    permission_required = 'viewer.remove_movie'
+

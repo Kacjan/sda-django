@@ -37,8 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'viewer',
+    'django_extensions',
 ]
+
+INSTALLED_EXTENSIONS = [
+    'viewer',
+    'accounts',
+]
+
+INSTALLED_APPS += INSTALLED_EXTENSIONS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -122,3 +129,6 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+
+LOGIN_REDIRECT_URL = 'index'
+LOGOUT_REDIRECT_URL = 'login'
